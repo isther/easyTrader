@@ -50,10 +50,10 @@ func (u *UserService) SetBinanceSecretKey(user *model.User, secretKey string) er
 	return user.SetBinanceSecretKey(secretKey)
 }
 
-func (u *UserService) SetDingDingTalkApiKey(user *model.User, apiKey string) error {
-	return user.SetDingDingTalkApiKey(apiKey)
+func (u *UserService) SetDingDingTalkAccessToken(user *model.User, accessToken string) error {
+	return user.SetDingDingTalkApiKey(accessToken)
 }
 
-func (u *UserService) SetDingDingTalkSecretKey(user *model.User, secretKey string) error {
-	return user.SetDingDingTalkSecretKey(secretKey)
+func (u *UserService) SetDingDingTalkSecret(user *model.User, secret string) error {
+	return user.SetDingDingTalkSecretKey(secret)
 }

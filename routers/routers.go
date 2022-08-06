@@ -37,8 +37,8 @@ func Init() *gin.Engine {
 		userAuthGroup.POST("/set/password", controller.NewUserController().SetPassword)
 		userAuthGroup.POST("/set/binance/apiKey", controller.NewUserController().SetBinanceApiKey)
 		userAuthGroup.POST("/set/binance/secretKey", controller.NewUserController().SetBinanceSecretKey)
-		userAuthGroup.POST("/set/dingdingTalk/apiKey", controller.NewUserController().SetDingDingTalkApiKey)
-		userAuthGroup.POST("/set/dingdingTalk/secretKey", controller.NewUserController().SetDingDingTalkSecretKey)
+		userAuthGroup.POST("/set/dingdingTalk/accessToken", controller.NewUserController().SetDingDingTalkAccessToken)
+		userAuthGroup.POST("/set/dingdingTalk/secret", controller.NewUserController().SetDingDingTalkSecret)
 	}
 	//}}}
 

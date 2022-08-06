@@ -205,7 +205,7 @@ func (u *UserController) SetBinanceSecretKey(ctx *gin.Context) {
 	})
 }
 
-func (u *UserController) SetDingDingTalkApiKey(ctx *gin.Context) {
+func (u *UserController) SetDingDingTalkAccessToken(ctx *gin.Context) {
 	var (
 		err       error
 		L         = ctx.Value("L").(*logrus.Entry)
@@ -234,9 +234,9 @@ func (u *UserController) SetDingDingTalkApiKey(ctx *gin.Context) {
 		})
 		return
 	}
-	apiKey := tmpParams["apiKey"]
+	accessToken := tmpParams["accessToken"]
 
-	err = service.NewUserService().SetDingDingTalkApiKey(&user, apiKey)
+	err = service.NewUserService().SetDingDingTalkAccessToken(&user, accessToken)
 	if err != nil {
 		L.WithError(err).Errorln("failed to set apiKey")
 		ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -250,7 +250,7 @@ func (u *UserController) SetDingDingTalkApiKey(ctx *gin.Context) {
 	})
 }
 
-func (u *UserController) SetDingDingTalkSecretKey(ctx *gin.Context) {
+func (u *UserController) SetDingDingTalkSecret(ctx *gin.Context) {
 	var (
 		err       error
 		L         = ctx.Value("L").(*logrus.Entry)
@@ -279,9 +279,9 @@ func (u *UserController) SetDingDingTalkSecretKey(ctx *gin.Context) {
 		})
 		return
 	}
-	secretKey := tmpParams["secretKey"]
+	secret := tmpParams["secret"]
 
-	err = service.NewUserService().SetDingDingTalkSecretKey(&user, secretKey)
+	err = service.NewUserService().SetDingDingTalkSecret(&user, secret)
 	if err != nil {
 		L.WithError(err).Errorln("failed to set secretKey")
 		ctx.JSON(http.StatusInternalServerError, gin.H{

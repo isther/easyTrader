@@ -18,8 +18,8 @@ type User struct {
 	} `json:"binance" bson:"binance"`
 
 	DingDingTalk struct {
-		ApiKey    string `json:"apiKey" bson:"apiKey"`
-		SecretKey string `json:"secretKey" bson:"secretKey"`
+		AccessToken    string `json:"accessToken" bson:"accessToken"`
+		Secret string `json:"secret" bson:"secret"`
 	} `json:"dingdingTalk" bson:"dingdingTalk"`
 	// ...
 }
@@ -80,22 +80,22 @@ func (u *User) SetBinanceSecretKey(secretKey string) error {
 	return err
 }
 
-func (u *User) SetDingDingTalkApiKey(apiKey string) error {
+func (u *User) SetDingDingTalkApiKey(accessToken string) error {
 	err := dao.UserCol.UpdateOne(
 		context.Background(),
 		bson.M{"username": u.Username},
-		bson.M{"$set": bson.M{"dingdingTalk.apiKey": apiKey}},
+		bson.M{"$set": bson.M{"dingdingTalk.accessToken": accessToken}},
 	)
-	u.Password = apiKey
+	u.Password = accessToken
 	return err
 }
 
-func (u *User) SetDingDingTalkSecretKey(secretKey string) error {
+func (u *User) SetDingDingTalkSecretKey(secret string) error {
 	err := dao.UserCol.UpdateOne(
 		context.Background(),
 		bson.M{"username": u.Username},
-		bson.M{"$set": bson.M{"dingdingTalk.secretKey": secretKey}},
+		bson.M{"$set": bson.M{"dingdingTalk.secret": secret}},
 	)
-	u.Password = secretKey
+	u.Password = secret
 	return err
 }
