@@ -15,7 +15,7 @@ RUN go build -ldflags "-s -w" -o backend .
 FROM scratch as runner
 
 COPY --from=builder /build/backend /
-COPY --from=builder /build/config.yaml /
+COPY --from=builder /build/config.yml /
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 EXPOSE 8080
