@@ -1,7 +1,7 @@
 version: "3"
 services:
   mongoDB:
-    container_name: mongoDB
+    container_name: easyTrader-mongoDB
     image: mongo:latest
     restart: always
     volumes:
@@ -9,20 +9,18 @@ services:
     ports:
       - '27017:27017'
 
-  # backend:
-    # container_name: wx-backend
-    # build:
-      # context: . 
-      # dockerfile: Dockerfile 
-    # restart: always
-    # links:
-      # - redis:redis
-      # - postgres:postgres
-    # depends_on:
-      # - postgres
-    # volumes:
-      # - ./data/static:/static
-      # - ./data/logs:/logs
-    # ports:
-      # - "0.0.0.0:9000:8080"
+  backend:
+    container_name: easyTrader-backend
+    build:
+      context: . 
+      dockerfile: Dockerfile 
+    restart: always
+    links:
+      - mongoDB:mongoDB
+    depends_on:
+      - mongoDB
+    volumes:
+      - ./data/logs:/logs
+    ports:
+      - "0.0.0.0:9000:8080"
 

@@ -16,4 +16,8 @@ docker-compose-up:
 	@docker-compose up -d
 
 docker-compose-down:
-	@docker-compse down
+	@docker-compose down
+
+docker-compose-clear: docker-compose-down
+	@docker image rm easytrader_backend
+	@rm -rf data
