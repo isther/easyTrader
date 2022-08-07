@@ -1,0 +1,5 @@
+dev: false
+listen: "0.0.0.0:8080"
+db:
+  mongoUri: "mongodb://mongoDB:27017"
+  dbName: "easy_trader"
