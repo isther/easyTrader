@@ -294,3 +294,49 @@ func (u *UserController) SetDingDingTalkSecret(ctx *gin.Context) {
 		"msg": "ok",
 	})
 }
+
+func (u *UserController) SetSymbols(ctx *gin.Context) {
+	var (
+		err       error
+		L         = ctx.Value("L").(*logrus.Entry)
+		tmpParams = make(map[string][]string)
+	)
+
+	token := ctx.GetHeader("Authorization")
+	claims, err := jwt.ParseMapClaimsJwt(token)
+	if err != nil {
+		L.WithError(err).Errorln("failed to generate token")
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+
+	user := model.User{
+		Username: claims["username"].(string),
+	}
+
+	err = ctx.ShouldBind(&tmpParams)
+	if err != nil {
+		L.WithError(err).Errorln("failed to get params")
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+	// symbols := tmpParams["symbols"].([]string)
+	symbols := tmpParams["symbols"]
+
+	err = service.NewUserService().SetSymbols(&user, symbols...)
+	if err != nil {
+		L.WithError(err).Errorln("failed to set secretKey")
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"msg": "ok",
+	})
+}
