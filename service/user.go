@@ -57,7 +57,3 @@ func (u *UserService) SetDingDingTalkAccessToken(user *model.User, accessToken s
 func (u *UserService) SetDingDingTalkSecret(user *model.User, secret string) error {
 	return user.SetDingDingTalkSecretKey(secret)
 }
-
-func (u *UserService) SetSymbols(user *model.User, symbols ...string) error {
-	return user.SetSymbols(symbols...)
-}

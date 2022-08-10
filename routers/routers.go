@@ -13,49 +13,67 @@ import (
 
 func Init() *gin.Engine {
 	router := gin.Default()
+	router.Use(middleware.Cors())
 	router.Use(middleware.Logger(logrus.StandardLogger()), gin.Recovery())
 
-	var jwtAuth *gin.RouterGroup
-	if conf.Conf.Dev {
-		jwtAuth = router.Group("/api")
-	} else {
-		jwtAuth = router.Group("/api", middleware.JWTAuth())
+	{ // WebSocket
+		wsGroup := router.Group("/ws")
+		wsGroup.GET("/ping", controller.NewWsController().Ping)
 	}
 
-	router.GET("/api/ping", ping)
+	{ // Http
+		var jwtAuth *gin.RouterGroup
+		if conf.Conf.Dev {
+			jwtAuth = router.Group("/api")
+		} else {
+			jwtAuth = router.Group("/api", middleware.JWTAuth())
+		}
 
-	//{{{ User routers
-	var userGroup = router.Group("/api/user")
-	{
-		userGroup.POST("/register", controller.NewUserController().Create)
-		userGroup.POST("/login", controller.NewUserController().Login)
+		router.GET("/api/ping", ping)
+
+		//{{{ User routers
+		var userGroup = router.Group("/api/user")
+		{
+			userGroup.POST("/register", controller.NewUserController().Create)
+			userGroup.POST("/login", controller.NewUserController().Login)
+		}
+
+		var userAuthGroup = jwtAuth.Group("/user")
+		{
+			userAuthGroup.POST("/hello", hello) // Test Authorization
+			{                                   // Set user info
+				userAuthGroup.POST("/set/password", controller.NewUserController().SetPassword)
+				userAuthGroup.POST("/set/binance/apiKey", controller.NewUserController().SetBinanceApiKey)
+				userAuthGroup.POST("/set/binance/secretKey", controller.NewUserController().SetBinanceSecretKey)
+				userAuthGroup.POST("/set/dingdingTalk/accessToken", controller.NewUserController().SetDingDingTalkAccessToken)
+				userAuthGroup.POST("/set/dingdingTalk/secret", controller.NewUserController().SetDingDingTalkSecret)
+			}
+		}
+		//}}}
+
+		//{{{ Symbols
+		var symbolsGroup = jwtAuth.Group("/symbols")
+		{
+			symbolsGroup.POST("/check", controller.NewSymbolsController().CheckIsOK)
+			symbolsGroup.POST("/set", controller.NewSymbolsController().SetSymbols)
+			symbolsGroup.POST("/get", controller.NewSymbolsController().GetSymbols)
+			symbolsGroup.POST("/search", controller.NewSymbolsController().SearchSymbols)
+		}
+		//}}}
+
+		//{{{ Trader routers
+		var traderAuthGroup = jwtAuth.Group("/trader")
+		{
+			traderAuthGroup.POST("/trade", nil)
+		}
+		//}}}
 	}
-
-	var userAuthGroup = jwtAuth.Group("/user")
-	{
-		userAuthGroup.POST("/hello", hello)
-		userAuthGroup.POST("/set/password", controller.NewUserController().SetPassword)
-		userAuthGroup.POST("/set/binance/apiKey", controller.NewUserController().SetBinanceApiKey)
-		userAuthGroup.POST("/set/binance/secretKey", controller.NewUserController().SetBinanceSecretKey)
-		userAuthGroup.POST("/set/dingdingTalk/accessToken", controller.NewUserController().SetDingDingTalkAccessToken)
-		userAuthGroup.POST("/set/dingdingTalk/secret", controller.NewUserController().SetDingDingTalkSecret)
-		userAuthGroup.POST("/set/symbols",controller.NewUserController().SetSymbols)
-	}
-	//}}}
-
-	//{{{ Trader routers
-	var traderAuthGroup = jwtAuth.Group("/trader")
-	{
-		traderAuthGroup.POST("/trade", nil)
-	}
-	//}}}
-
 	return router
 }
 
 func ping(ctx *gin.Context) {
 	ctx.JSON(200, gin.H{
-		"message": "pong",
+		"msg": "pong",
 	})
 }
 
