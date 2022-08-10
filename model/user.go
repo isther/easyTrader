@@ -18,6 +18,7 @@ type User struct {
 	} `json:"binance" bson:"binance"`
 
 	DingDingTalk struct {
+		Enable      bool   `json:"enable" bson:"enable"`
 		AccessToken string `json:"accessToken" bson:"accessToken"`
 		Secret      string `json:"secret" bson:"secret"`
 	} `json:"dingdingTalk" bson:"dingdingTalk"`
@@ -99,6 +100,16 @@ func (u *User) SetDingDingTalkSecretKey(secret string) error {
 		bson.M{"$set": bson.M{"dingdingTalk.secret": secret}},
 	)
 	u.Password = secret
+	return err
+}
+
+func (u *User) EnableDingDingTalk(enable bool) error {
+	err := dao.UserCol.UpdateOne(
+		context.Background(),
+		bson.M{"username": u.Username},
+		bson.M{"$set": bson.M{"dingdingTalk.enable": enable}},
+	)
+	u.DingDingTalk.Enable = enable
 	return err
 }
 
