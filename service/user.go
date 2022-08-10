@@ -57,3 +57,54 @@ func (u *UserService) SetDingDingTalkAccessToken(user *model.User, accessToken s
 func (u *UserService) SetDingDingTalkSecret(user *model.User, secret string) error {
 	return user.SetDingDingTalkSecretKey(secret)
 }
+
+func (u *UserService) SetDingDingTalkEnable(user *model.User, enable bool) error {
+	return user.EnableDingDingTalk(enable)
+}
+
+func (u *UserService) GetBinanceApiKey(username string) (string, error) {
+	uf, err := model.FindUserByUsername(username)
+	if err != nil {
+		return "", err
+	}
+
+	return uf.Binance.ApiKey, nil
+}
+
+func (u *UserService) GetBinanceSecretKey(username string) (string, error) {
+	// uf, err := model.FindUserByUsername(username)
+	// if err != nil {
+	// return "", err
+	// }
+
+	// return uf.Binance.SecretKey, nil
+	return "", nil
+}
+
+func (u *UserService) GetDingDingTalkAccessToken(username string) (string, error) {
+	uf, err := model.FindUserByUsername(username)
+	if err != nil {
+		return "", err
+	}
+
+	return uf.DingDingTalk.AccessToken, nil
+}
+
+func (u *UserService) GetDingDingTalkSecret(username string) (string, error) {
+	// uf, err := model.FindUserByUsername(username)
+	// if err != nil {
+	// return "", err
+	// }
+
+	// return uf.DingDingTalk.Secret, nil
+	return "", nil
+}
+
+func (u *UserService) GetDingDingTalkEnable(username string) (bool, error) {
+	uf, err := model.FindUserByUsername(username)
+	if err != nil {
+		return false, err
+	}
+
+	return uf.DingDingTalk.Enable, nil
+}

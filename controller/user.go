@@ -295,3 +295,201 @@ func (u *UserController) SetDingDingTalkSecret(ctx *gin.Context) {
 	})
 }
 
+func (u *UserController) SetDingDingTalkEnable(ctx *gin.Context) {
+	var (
+		err       error
+		L         = ctx.Value("L").(*logrus.Entry)
+		tmpParams = make(map[string]interface{})
+	)
+
+	claims, err := jwt.ParseMapClaimsJwtHeader(ctx)
+	if err != nil {
+		L.WithError(err).Errorln("failed to generate token")
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+
+	user := model.User{
+		Username: claims["username"].(string),
+	}
+
+	err = ctx.ShouldBind(&tmpParams)
+	if err != nil {
+		L.WithError(err).Errorln("failed to get params")
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+	enable := tmpParams["enable"].(bool)
+
+	err = service.NewUserService().SetDingDingTalkEnable(&user, enable)
+	if err != nil {
+		L.WithError(err).Errorln("failed to set secretKey")
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"msg": "ok",
+	})
+}
+
+func (u *UserController) GetBinanceApiKey(ctx *gin.Context) {
+	var (
+		err error
+		L   = ctx.Value("L").(*logrus.Entry)
+	)
+
+	claims, err := jwt.ParseMapClaimsJwtHeader(ctx)
+	if err != nil {
+		L.WithError(err).Errorln("failed to generate token")
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+
+	apiKey, err := service.NewUserService().GetBinanceApiKey(claims["username"].(string))
+	if err != nil {
+		L.WithError(err).Errorln("failed to set secretKey")
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg":    err.Error(),
+			"apiKey": apiKey,
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"msg":    "ok",
+		"apiKey": apiKey,
+	})
+}
+
+func (u *UserController) GetBinanceSecretKey(ctx *gin.Context) {
+	var (
+		err error
+		L   = ctx.Value("L").(*logrus.Entry)
+	)
+
+	claims, err := jwt.ParseMapClaimsJwtHeader(ctx)
+	if err != nil {
+		L.WithError(err).Errorln("failed to generate token")
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+
+	secretKey, err := service.NewUserService().GetBinanceSecretKey(claims["username"].(string))
+	if err != nil {
+		L.WithError(err).Errorln("failed to set secretKey")
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg":       err.Error(),
+			"secretKey": secretKey,
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"msg":       "ok",
+		"secretKey": secretKey,
+	})
+}
+
+func (u *UserController) GetDingDingTalkEnable(ctx *gin.Context) {
+	var (
+		err error
+		L   = ctx.Value("L").(*logrus.Entry)
+	)
+
+	claims, err := jwt.ParseMapClaimsJwtHeader(ctx)
+	if err != nil {
+		L.WithError(err).Errorln("failed to generate token")
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+
+	enable, err := service.NewUserService().GetDingDingTalkEnable(claims["username"].(string))
+	if err != nil {
+		L.WithError(err).Errorln("failed to set secretKey")
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg":    err.Error(),
+			"enable": enable,
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"msg":    "ok",
+		"enable": enable,
+	})
+}
+
+func (u *UserController) GetDingDingTalkAccessToken(ctx *gin.Context) {
+	var (
+		err error
+		L   = ctx.Value("L").(*logrus.Entry)
+	)
+
+	claims, err := jwt.ParseMapClaimsJwtHeader(ctx)
+	if err != nil {
+		L.WithError(err).Errorln("failed to generate token")
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+
+	accessToken, err := service.NewUserService().GetDingDingTalkAccessToken(claims["username"].(string))
+	if err != nil {
+		L.WithError(err).Errorln("failed to set secretKey")
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg":         err.Error(),
+			"accessToken": accessToken,
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"msg":         "ok",
+		"accessToken": accessToken,
+	})
+}
+
+func (u *UserController) GetDingDingTalkSecret(ctx *gin.Context) {
+	var (
+		err error
+		L   = ctx.Value("L").(*logrus.Entry)
+	)
+
+	claims, err := jwt.ParseMapClaimsJwtHeader(ctx)
+	if err != nil {
+		L.WithError(err).Errorln("failed to generate token")
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+
+	secretKey, err := service.NewUserService().GetBinanceSecretKey(claims["username"].(string))
+	if err != nil {
+		L.WithError(err).Errorln("failed to set secretKey")
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg":       err.Error(),
+			"secretKey": secretKey,
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"msg":       "ok",
+		"secretKey": secretKey,
+	})
+}

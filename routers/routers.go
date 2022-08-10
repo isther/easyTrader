@@ -41,12 +41,22 @@ func Init() *gin.Engine {
 		var userAuthGroup = jwtAuth.Group("/user")
 		{
 			userAuthGroup.POST("/hello", hello) // Test Authorization
-			{                                   // Set user info
+
+			{ // Set user info
 				userAuthGroup.POST("/set/password", controller.NewUserController().SetPassword)
 				userAuthGroup.POST("/set/binance/apiKey", controller.NewUserController().SetBinanceApiKey)
 				userAuthGroup.POST("/set/binance/secretKey", controller.NewUserController().SetBinanceSecretKey)
+				userAuthGroup.POST("/set/dingdingTalk/enable", controller.NewUserController().SetDingDingTalkEnable)
 				userAuthGroup.POST("/set/dingdingTalk/accessToken", controller.NewUserController().SetDingDingTalkAccessToken)
 				userAuthGroup.POST("/set/dingdingTalk/secret", controller.NewUserController().SetDingDingTalkSecret)
+			}
+
+			{ // Get user info
+				userAuthGroup.POST("/get/binance/apiKey", controller.NewUserController().GetBinanceApiKey)
+				userAuthGroup.POST("/get/binance/secretKey", controller.NewUserController().GetBinanceSecretKey)
+				userAuthGroup.POST("/get/dingdingTalk/enable", controller.NewUserController().GetDingDingTalkEnable)
+				userAuthGroup.POST("/get/dingdingTalk/accessToken", controller.NewUserController().GetDingDingTalkAccessToken)
+				userAuthGroup.POST("/get/dingdingTalk/secret", controller.NewUserController().GetDingDingTalkSecret)
 			}
 		}
 		//}}}
