@@ -20,4 +20,6 @@ docker-compose-down:
 
 docker-compose-clear: docker-compose-down
 	@docker image rm easytrader_backend
-	@rm -rf data
+	@sudo rm -rf data
+
+docker-compose-restart: docker-compose-clear docker-compose-up

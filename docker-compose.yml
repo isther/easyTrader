@@ -12,8 +12,8 @@ services:
   backend:
     container_name: easyTrader-backend
     build:
-      context: . 
-      dockerfile: Dockerfile 
+      context: .
+      dockerfile: Dockerfile
     restart: always
     links:
       - mongoDB:mongoDB
