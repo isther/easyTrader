@@ -10,6 +10,7 @@ WORKDIR /build
 
 COPY . .
 
+RUN go mod tidy
 RUN go build -ldflags "-s -w" -o backend .
 
 FROM scratch as runner
