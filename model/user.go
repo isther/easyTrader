@@ -69,7 +69,7 @@ func (u *User) SetBinanceApiKey(apiKey string) error {
 		bson.M{"username": u.Username},
 		bson.M{"$set": bson.M{"binance.apiKey": apiKey}},
 	)
-	u.Password = apiKey
+	u.Binance.ApiKey = apiKey
 	return err
 }
 
@@ -79,7 +79,7 @@ func (u *User) SetBinanceSecretKey(secretKey string) error {
 		bson.M{"username": u.Username},
 		bson.M{"$set": bson.M{"binance.secretKey": secretKey}},
 	)
-	u.Password = secretKey
+	u.Binance.SecretKey = secretKey
 	return err
 }
 
@@ -89,7 +89,7 @@ func (u *User) SetDingDingTalkApiKey(accessToken string) error {
 		bson.M{"username": u.Username},
 		bson.M{"$set": bson.M{"dingdingTalk.accessToken": accessToken}},
 	)
-	u.Password = accessToken
+	u.DingDingTalk.AccessToken = accessToken
 	return err
 }
 
@@ -99,7 +99,7 @@ func (u *User) SetDingDingTalkSecretKey(secret string) error {
 		bson.M{"username": u.Username},
 		bson.M{"$set": bson.M{"dingdingTalk.secret": secret}},
 	)
-	u.Password = secret
+	u.DingDingTalk.Secret = secret
 	return err
 }
 
