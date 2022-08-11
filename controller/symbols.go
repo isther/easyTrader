@@ -143,6 +143,7 @@ func (s *SymbolsController) SearchSymbols(ctx *gin.Context) {
 		err       error
 		L         = ctx.Value("L").(*logrus.Entry)
 		tmpParams = struct {
+			Interval           json.Number `json:"interval"`
 			Amplitue           json.Number `json:"amplitue"`
 			AmplituePercentage json.Number `json:"amplituePercentage"`
 		}{}
@@ -167,10 +168,11 @@ func (s *SymbolsController) SearchSymbols(ctx *gin.Context) {
 		return
 	}
 
+	interval, _ := tmpParams.Interval.Int64()
 	amplitue, _ := tmpParams.Amplitue.Float64()
 	amplituePercentage, _ := tmpParams.AmplituePercentage.Float64()
 
-	res, err := service.NewSymbolsService().SearchSymbols(claims["username"].(string), amplitue, amplituePercentage)
+	res, err := service.NewSymbolsService().SearchSymbols(claims["username"].(string), interval, amplitue, amplituePercentage)
 	if err != nil {
 		L.WithError(err).Errorln("failed to search symbols by amplitue")
 		ctx.JSON(http.StatusInternalServerError, gin.H{

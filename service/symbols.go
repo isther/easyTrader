@@ -43,7 +43,7 @@ func (s *SymbolsService) GetSymbols(username string) ([]string, error) {
 	return uf.Symbols, nil
 }
 
-func (s *SymbolsService) SearchSymbols(username string, amplitue, amplituePercentage float64) ([]*account.SearchByAmplitueResult, error) {
+func (s *SymbolsService) SearchSymbols(username string, interval int64, amplitue, amplituePercentage float64) ([]*account.SearchByAmplitueResult, error) {
 	uf, err := model.FindUserByUsername(username)
 	if err != nil {
 		return nil, err
@@ -55,5 +55,5 @@ func (s *SymbolsService) SearchSymbols(username string, amplitue, amplituePercen
 		Account: account.NewBinance(uf.Binance.ApiKey, uf.Binance.SecretKey),
 	}
 
-	return worker.SearchSymbolsByAmplitue(120, amplitue, amplituePercentage), nil
+	return worker.SearchSymbolsByAmplitue(interval, amplitue, amplituePercentage), nil
 }

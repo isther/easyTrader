@@ -26,7 +26,7 @@ type SearchByAmplitueResult struct {
 	Klines []*Kline
 }
 
-func (worker *Worker) SearchSymbolsByAmplitue(limit int, amplitueLimit, amplituePercentageLimit float64) []*SearchByAmplitueResult {
+func (worker *Worker) SearchSymbolsByAmplitue(inteval int64, amplitueLimit, amplituePercentageLimit float64) []*SearchByAmplitueResult {
 	var (
 		results []*SearchByAmplitueResult
 	)
@@ -36,7 +36,7 @@ func (worker *Worker) SearchSymbolsByAmplitue(limit int, amplitueLimit, amplitue
 			symbol = worker.Symbols[i]
 			result = new(SearchByAmplitueResult)
 		)
-		klines, err := worker.Account.SetSymbol(symbol).GetHttpKlinesWith1m(limit, worker.Context)
+		klines, err := worker.Account.SetSymbol(symbol).GetHttpKlinesWith1m(int(inteval), worker.Context)
 		if err != nil {
 			continue
 		}
